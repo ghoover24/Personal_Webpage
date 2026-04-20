@@ -3,6 +3,9 @@ title: ""
 about: 
   id: intro-heading
   template: jolla
+  image-width: 20em
+  image-shape: round
+  image: images/montana_picture.jpg
   links: 
     - icon: envelope
       href: mailto:hoover7@stolaf.edu
@@ -13,6 +16,8 @@ about:
 
 :::{#intro-heading}
 ## Gaby Hoover
+**St. Olaf College**
+
 she/her/hers
 
 ### Personal
