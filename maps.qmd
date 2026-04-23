@@ -1,0 +1,186 @@
+---
+title: "Interactive Maps"
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+library(tidyverse)
+library(leaflet)
+library(sf)
+library(maps)
+library(poliscidata)
+library(viridis)
+library(glue)
+library(htmltools)
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+# Get info to draw US states for geom_polygon (connect the lat-long points)
+states_polygon <- as_tibble(map_data("state")) |>
+  select(region, group, order, lat, long)
+
+# Get info to draw US states for geom_sf and leaflet (simple features object 
+#   with multipolygon geometry column)
+states_sf <- 
+  read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson") |>
+  select(name, geometry)
+
+# Load in state-wise data for filling our choropleth maps
+polisci_data <- as_tibble(poliscidata::states) |>
+  select(state, carfatal07, cook_index3)
+
+```
+
+# Static and Interactive Maps!
+
+```{r}
+#| echo: false
+#| message: false
+# states_polygon
+states_polygon <- states_polygon |>
+  rename(state = region) |>
+  filter(!state %in% c("district of columbia")) |>
+  mutate(state = str_replace_all(state, " ", ""))
+
+# state_sf
+states_sf <- states_sf |> 
+  mutate(name = str_replace_all(name, " ", "")) |>
+  rename(state = name)
+
+states_sf <- states_sf |>
+  filter(!state %in% c("Alaska", "Hawaii", "DistrictofColumbia", "PuertoRico")) |>
+  mutate(state = str_to_lower(state))
+
+# polisci
+polisci_data <- polisci_data |> 
+  mutate(state = str_squish(state)) |>
+  filter(!state %in% c("Alaska", "Hawaii")) |>
+  mutate(state = str_to_lower(state))
+
+```
+
+```{r}
+#| echo: false
+#| message: false
+# Merge with states_polygon (static)
+gg_states <- polisci_data |>
+  full_join(states_polygon)
+
+# Check that merge worked for 48 contiguous states
+#   unique(gg_states$state)
+
+# Merge with states_sf (static or interactive)
+int_states <- polisci_data |>
+  full_join(states_sf)
+
+# Check that merge worked for 48 contiguous states
+#   unique(int_states$state)
+int_states <- st_as_sf(int_states)
+# class(int_states)
+```
+
+Numeric variable (static plot): Here, you can see that Mississippi and Montana had the most car fatalities per 100,000 in 2007 as they are the lightest in color. The Northeast region of the U.S. seems to have the least amount of car fatalities per 100,000 as they are the darkest states.
+
+```{r}
+#| echo: false
+gg_states |>
+  ggplot(aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = carfatal07), color = "black") +
+  coord_map() +
+  scale_fill_viridis() +
+  theme_void() +
+  labs(fill = "Motor vehicle fatalities per 100,000 pop.")
+```
+
+Numeric variable (interactive plot): Here, you can see exactly how many average car fatalities occur in each state instead of inferring from the color and legend.
+
+```{r}
+#| echo: false
+
+bins <- c(0, 5, 10, 15, 20, 25, 30, 35)
+pal <- colorBin("YlOrRd", domain = int_states$carfatal07, bins = bins)
+int_states <- int_states |> 
+  mutate(labels = str_c(str_to_title(state), ": ", carfatal07, " motor vehicle fatalities / 100,000 pop"))
+labels <- lapply(int_states$labels, HTML)
+
+leaflet(int_states) |>
+  setView(-96, 37.8, 4) |>
+  addTiles() |>
+  addPolygons(
+    fillColor = ~pal(carfatal07),
+    weight = 2,
+    opacity = 1,
+    color = "black",
+    dashArray = "3",
+    fillOpacity = 1,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "red",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) |>
+  addLegend(pal = pal, values = ~carfatal07, opacity = 0.7, title = NULL,
+    position = "bottomright")
+  
+```
+
+Categorical variable (static plot): In this plot, you can generally see where states and regions of the U.S. lean politically. 
+
+```{r}
+#| echo: false
+gg_states |>
+  ggplot(aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = cook_index3), color = "black") +
+  coord_map() +
+  scale_fill_manual(values = c("red", "purple", "blue")) +
+  theme_void() +
+  labs(fill = "Cook Index")
+```
+
+Categorical variable (interactive plot): With the interactive version, you can zoom in/hover on the smaller states to see where they lean politically more easily than you can on the static map.
+
+```{r}
+#| echo: false
+colors <- colorFactor(c("red", "purple", "blue"), domain = int_states$cook_index3)
+
+int_states <- int_states |>
+  mutate(labels2 = str_c(str_to_title(state), " : ", cook_index3))
+labels2 <- lapply(int_states$labels2, HTML)
+
+leaflet(int_states) |>
+  setView(-96, 37.8, 4) |>
+  addTiles() |>
+  addPolygons(
+    fillColor = ~colors(cook_index3),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "black",
+      bringToFront = TRUE),
+    label = labels2,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) |>
+  addLegend(pal = colors, values = ~cook_index3, opacity = 0.7, title = NULL,
+    position = "bottomright")
+
+```
