@@ -15,8 +15,7 @@ website:
 format:
   html:
     theme:
-      - cosmo
-      - brand
+      - styles.css
     css: styles.css
     toc: true
 

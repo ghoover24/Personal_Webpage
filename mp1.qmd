@@ -1,6 +1,9 @@
 ---
-title: "Mini-Project 1"
+title: "Text Analysis"
 ---
+
+This is a text analysis I performed as part of a project for my data science 2 class. 
+
 # Analysis of Headlines Relating to Women
 ```{r, include = FALSE}
 library(tidyverse) # general
