@@ -1,9 +1,11 @@
 ---
-title: "Interactive Maps"
+title: "Static and Interactive Maps"
 editor: visual
 editor_options: 
   chunk_output_type: console
 ---
+
+These are a few plots I made as a part of a homework assignment for my data science 2 class! The data I used is from the `poliscidata` package.
 
 ```{r}
 #| message: false
@@ -41,7 +43,7 @@ polisci_data <- as_tibble(poliscidata::states) |>
 
 ```
 
-# Static and Interactive Maps!
+## Motor Vehicle Fatalities Across America
 
 ```{r}
 #| echo: false
@@ -89,7 +91,10 @@ int_states <- st_as_sf(int_states)
 # class(int_states)
 ```
 
-Numeric variable (static plot): Here, you can see that Mississippi and Montana had the most car fatalities per 100,000 in 2007 as they are the lightest in color. The Northeast region of the U.S. seems to have the least amount of car fatalities per 100,000 as they are the darkest states.
+
+### Static Map
+
+Here, you can see that Mississippi and Montana had the most car fatalities per 100,000 in 2007 as they are the lightest in color. The Northeast region of the U.S. seems to have the least amount of car fatalities per 100,000 as they are the darkest states.
 
 ```{r}
 #| echo: false
@@ -102,7 +107,9 @@ gg_states |>
   labs(fill = "Motor vehicle fatalities per 100,000 pop.")
 ```
 
-Numeric variable (interactive plot): Here, you can see exactly how many average car fatalities occur in each state instead of inferring from the color and legend.
+### Interactive Map
+
+In the interactive version, you can see exactly how many average car fatalities occur in each state instead of inferring from the color and legend.
 
 ```{r}
 #| echo: false
@@ -139,7 +146,11 @@ leaflet(int_states) |>
   
 ```
 
-Categorical variable (static plot): In this plot, you can generally see where states and regions of the U.S. lean politically. 
+## Political Party Lean Across America
+
+### Static Map
+
+In this plot, you can generally see where states and regions of the U.S. lean politically. Here, you can infer what states are potential "swing" states in presidential elections. It is also interesting to see how the coasts lean more democratic compared to the midwest and south lean more republican.
 
 ```{r}
 #| echo: false
@@ -152,7 +163,9 @@ gg_states |>
   labs(fill = "Cook Index")
 ```
 
-Categorical variable (interactive plot): With the interactive version, you can zoom in/hover on the smaller states to see where they lean politically more easily than you can on the static map.
+# Interactive Map
+
+You can see a lot of the same information from the static plot in this interactive map.However, with the interactive version, you can zoom in/hover on the smaller states (RI, NJ, etc) to see exactly where they lean politically more easily than you can on the static map.
 
 ```{r}
 #| echo: false

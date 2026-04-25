@@ -2,9 +2,23 @@
   {
     "objectID": "maps.html",
     "href": "maps.html",
-    "title": "Interactive Maps",
+    "title": "Static and Interactive Maps",
     "section": "",
-    "text": "Static and Interactive Maps!\nNumeric variable (static plot): Here, you can see that Mississippi and Montana had the most car fatalities per 100,000 in 2007 as they are the lightest in color. The Northeast region of the U.S. seems to have the least amount of car fatalities per 100,000 as they are the darkest states.\n\n\n\n\n\n\n\n\n\nNumeric variable (interactive plot): Here, you can see exactly how many average car fatalities occur in each state instead of inferring from the color and legend.\n\n\n\n\n\n\nCategorical variable (static plot): In this plot, you can generally see where states and regions of the U.S. lean politically.\n\n\n\n\n\n\n\n\n\nCategorical variable (interactive plot): With the interactive version, you can zoom in/hover on the smaller states to see where they lean politically more easily than you can on the static map."
+    "text": "These are a few plots I made as a part of a homework assignment for my data science 2 class! The data I used is from the poliscidata package."
+  },
+  {
+    "objectID": "maps.html#motor-vehicle-fatalities-across-america",
+    "href": "maps.html#motor-vehicle-fatalities-across-america",
+    "title": "Static and Interactive Maps",
+    "section": "Motor Vehicle Fatalities Across America",
+    "text": "Motor Vehicle Fatalities Across America\n\nStatic Map\nHere, you can see that Mississippi and Montana had the most car fatalities per 100,000 in 2007 as they are the lightest in color. The Northeast region of the U.S. seems to have the least amount of car fatalities per 100,000 as they are the darkest states.\n\n\n\n\n\n\n\n\n\n\n\nInteractive Map\nIn the interactive version, you can see exactly how many average car fatalities occur in each state instead of inferring from the color and legend."
+  },
+  {
+    "objectID": "maps.html#political-party-lean-across-america",
+    "href": "maps.html#political-party-lean-across-america",
+    "title": "Static and Interactive Maps",
+    "section": "Political Party Lean Across America",
+    "text": "Political Party Lean Across America\n\nStatic Map\nIn this plot, you can generally see where states and regions of the U.S. lean politically. Here, you can infer what states are potential “swing” states in presidential elections. It is also interesting to see how the coasts lean more democratic compared to the midwest and south lean more republican."
   },
   {
     "objectID": "mp1.html",
