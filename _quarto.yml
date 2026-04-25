@@ -8,13 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
       - mp1.qmd
       - maps.qmd
   page-footer: 
     right: |
-      This website is built with [Quarto](https://quarto.org/){target=_blank}
-      
       Source code on my [GitHub](https://github.com/ghoover24/ghoover24.github.io){target=_blank}
 
 
