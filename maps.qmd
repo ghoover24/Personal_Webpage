@@ -1,6 +1,5 @@
 ---
 title: "Static and Interactive Maps"
-editor: visual
 editor_options: 
   chunk_output_type: console
 ---
@@ -91,7 +90,6 @@ int_states <- st_as_sf(int_states)
 # class(int_states)
 ```
 
-
 ### Static Map
 
 Here, you can see that Mississippi and Montana had the most car fatalities per 100,000 in 2007 as they are the lightest in color. The Northeast region of the U.S. seems to have the least amount of car fatalities per 100,000 as they are the darkest states.
@@ -104,7 +102,8 @@ gg_states |>
   coord_map() +
   scale_fill_viridis() +
   theme_void() +
-  labs(fill = "Motor vehicle fatalities per 100,000 pop.")
+  labs(fill = "Motor vehicle fatalities per 100,000 pop.",
+       caption = "Data from the poliscidata R package")
 ```
 
 ### Interactive Map
@@ -160,7 +159,8 @@ gg_states |>
   coord_map() +
   scale_fill_manual(values = c("red", "purple", "blue")) +
   theme_void() +
-  labs(fill = "Cook Index")
+  labs(fill = "Cook Index",
+       caption = "Data from the poliscidata R package")
 ```
 
 # Interactive Map
@@ -194,6 +194,6 @@ leaflet(int_states) |>
       textsize = "15px",
       direction = "auto")) |>
   addLegend(pal = colors, values = ~cook_index3, opacity = 0.7, title = NULL,
-    position = "bottomright")
+    position = "bottomright") 
 
 ```
