@@ -188,7 +188,7 @@ gg_states |>
        title = "Political party lean by state")
 ```
 
-# Interactive Map
+## Interactive Map
 
 You can see a lot of the same information from the static plot in this interactive map.However, with the interactive version, you can zoom in/hover on the smaller states (RI, NJ, etc) to see exactly where they lean politically more easily than you can on the static map.
 
